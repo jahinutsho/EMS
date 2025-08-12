@@ -22,6 +22,7 @@ import { LeaveRequest } from './hr/entities/leave-request.entity';
 import { PerformanceReview } from './hr/entities/performance-review.entity';
 import { Announcement } from './hr/entities/announcement.entity';
 
+
 @Module({
   imports: [ 
     TypeOrmModule.forRoot({
@@ -37,6 +38,7 @@ import { Announcement } from './hr/entities/announcement.entity';
 
     ConfigModule.forRoot({
       isGlobal: true,
+      envFilePath: '.env',
     }),
 
     CacheModule.register({
