@@ -6,6 +6,9 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Role } from '../auth/role/role.decorator';
 import { Request } from 'express';
+import { AuthGuard } from '@nestjs/passport';
+import { CreateLeaveDto } from '../leave/dto/create-leave.dto';
+import { CreateAttendanceDto } from '../attendance/dto/create-attendance.dto';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('employee')
@@ -50,5 +53,17 @@ export class EmployeeController {
     const currentUser = req.user;
     console.log('Current Admin:', currentUser);
     return this.employeeService.remove(id);
+  }
+
+  @Post('leave')
+  @UseGuards(AuthGuard('jwt'))
+  async requestLeave(@Req() req, @Body() createLeaveDto: CreateLeaveDto) {
+    return this.employeeService.requestLeave(req.user.id, createLeaveDto);
+  }
+
+  @Post('attendance')
+  @UseGuards(AuthGuard('jwt'))
+  async recordAttendance(@Req() req, @Body() createAttendanceDto: CreateAttendanceDto) {
+    return this.employeeService.recordAttendance(req.user.id, createAttendanceDto);
   }
 }
